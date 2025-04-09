@@ -18,13 +18,7 @@ export const writeBlog = async ({
   const pool = await createDatabaseConnectionPool();
 
   await pool.connect(async (connection) => {
-    return await updateBlogQuery(
-      connection,
-      id,
-      title,
-      content,
-      slug,
-    );
+    return await updateBlogQuery(connection, id, title, content, slug);
   });
 
   await pool.end();

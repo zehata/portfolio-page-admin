@@ -3,10 +3,13 @@ import {
   S3Client,
   PutObjectCommand,
   S3ServiceException,
-  GetObjectCommand,
 } from "@aws-sdk/client-s3";
 
-export const uploadToCloudflare = async (filename: string, contentType: string, body: Buffer) => {
+export const uploadToCloudflare = async (
+  filename: string,
+  contentType: string,
+  body: Buffer,
+) => {
   if (
     !process.env.R2_region ||
     !process.env.R2_ENDPOINT ||

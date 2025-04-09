@@ -1,11 +1,6 @@
 "use client";
-
-import getBlog from "@/lib/getBlog";
-import { writeBlog } from "@/lib/writeBlog";
 import React, { ImgHTMLAttributes } from "react";
 import classNames from "classnames";
-import { uploadToCloudflare } from "@/lib/uploadToCloudflare";
-import { randomUUID } from "node:crypto";
 import { dragAndDropUpload } from "@/lib/dragAndDropUpload";
 import Markdown from "react-markdown";
 import { debounce } from "lodash";
@@ -35,7 +30,7 @@ export const Editor = ({
     title: string;
     content: string;
     slug: string;
-  }>(databaseArticle)
+  }>(databaseArticle);
 
   const [articlePreview, setArticlePreview] = React.useState<{
     title: string;
@@ -43,15 +38,13 @@ export const Editor = ({
     slug: string;
   }>(databaseArticle);
 
-  const renderPreview = React.useMemo(() =>
-    debounce((article: {
-      title: string;
-      content: string;
-      slug: string;
-    }) => {
-      setArticlePreview(article);
-    }, 1000),
-  [])
+  const renderPreview = React.useMemo(
+    () =>
+      debounce((article: { title: string; content: string; slug: string }) => {
+        setArticlePreview(article);
+      }, 1000),
+    [],
+  );
 
   const [dragging, setDraggingOver] = React.useState<boolean>(false);
 
@@ -60,123 +53,147 @@ export const Editor = ({
     event.preventDefault();
     setDraggingOver(false);
     if (event.dataTransfer.items) {
-      [...event.dataTransfer.items].forEach((item, i) => {
-        if (item.kind != "file") return
+      [...event.dataTransfer.items].forEach((item) => {
+        if (item.kind != "file") return;
         const file = item.getAsFile();
-        if (!file) return
-        dragAndDropUpload(file)
-          .then(filename => {
-            if (!textarea.current) return
-            const cursorStartPosition = textarea.current.selectionStart;
-            const cursorEndPosition = textarea.current.selectionEnd; 
-            setArticle({
-              ...article,
-              content: `${article.content.slice(0, cursorStartPosition)}![alt text](${filename})${article.content.slice(cursorEndPosition)}`
-            })
-          })
-      })
+        if (!file) return;
+        dragAndDropUpload(file).then((filename) => {
+          if (!textarea.current) return;
+          const cursorStartPosition = textarea.current.selectionStart;
+          const cursorEndPosition = textarea.current.selectionEnd;
+          setArticle({
+            ...article,
+            content: `${article.content.slice(0, cursorStartPosition)}![alt text](${filename})${article.content.slice(cursorEndPosition)}`,
+          });
+        });
+      });
     }
-  }
+  };
 
   const textarea = React.useRef<HTMLTextAreaElement>(null);
 
   React.useEffect(() => {
     renderPreview(article);
-    if (article === databaseArticle) return
+    if (article === databaseArticle) return;
     window.addEventListener("beforeunload", (event) => event.preventDefault());
-    
+
     return () => {
-      window.removeEventListener('beforeunload', (event) => event.preventDefault());
+      window.removeEventListener("beforeunload", (event) =>
+        event.preventDefault(),
+      );
     };
-  }, [article, databaseArticle]);
+  }, [renderPreview, article, databaseArticle]);
 
   const customImage = (img: ImgHTMLAttributes<HTMLImageElement>) => {
     const src = img.src;
-    if (!src) return <img/>
-    const params = (new URL(src)).searchParams;
+    const alt = img.alt;
+    if (!src) return <img alt={alt} />;
+    const params = new URL(src).searchParams;
     const width = params.get("width");
     const height = params.get("height");
-    if (!width || !height) return <img src={src}/>
-    return <img width={width} height={height} src={src}/>
-  }
+    if (!width || !height) return <img alt={alt} src={src} />;
+    return <img alt={alt} width={width} height={height} src={src} />;
+  };
 
-  return <div className="w-full h-full flex flex-col gap-4 overflow-auto">
-    <button
-      className="w-md border-2"
-      onClick={() => saveArticle({
-        title: article.title,
-        content: article.content,
-        slug: article.slug,
-      })}
-    >{buttonLabel}</button>
-    <div className="w-full">
-      <h1>{`Title`}</h1>
-      <input className="border-2" value={article.title} onChange={(event) => {
-        if (!article) return
-        setArticle({
-          ...article,
-          title: event.target.value,
-        })
-      }}></input>
-    </div>
-    <div className="w-full">
-      <h1>{`Slug`}</h1>
-      <input className="border-2" value={article.slug} onChange={(event) => {
-        if (!article) return
-        setArticle({
-          ...article,
-          slug: event.target.value,
-        })
-      }}></input>
-    </div>
-    <div className="w-full">
-      <h1>{`Content`}</h1>
-      <div className="relative w-fit h-fit"
-        onDragOver={(event) => {
-          event.stopPropagation();
-          event.preventDefault();
-          if (dragging) return
-          setDraggingOver(true)
-        }}
-        onDrop={handleFileDrop}
-      >
-        <textarea ref={textarea} rows={40} cols={100} className="resize border-2" value={article?.content} onChange={(event) => {
-          if (!article) return
-          setArticle({
-            ...article,
-            content: event.target.value,
+  return (
+    <div className="w-full h-full flex flex-col gap-4 overflow-auto">
+      <button
+        className="w-md border-2"
+        onClick={() =>
+          saveArticle({
+            title: article.title,
+            content: article.content,
+            slug: article.slug,
           })
-        }} 
-        onDrop={handleFileDrop}></textarea>
-        <div
-          className={classNames("absolute top-0 left-0 w-full h-full p-4 rounded-3xl z-1", {
-            ["hidden"]: !dragging,
-            ["block"]: dragging,
-          })}
-          onDrop={handleFileDrop}
-          onDragLeave={() => {
-            setDraggingOver(false)
+        }
+      >
+        {buttonLabel}
+      </button>
+      <div className="w-full">
+        <h1>{`Title`}</h1>
+        <input
+          className="border-2"
+          value={article.title}
+          onChange={(event) => {
+            if (!article) return;
+            setArticle({
+              ...article,
+              title: event.target.value,
+            });
           }}
+        ></input>
+      </div>
+      <div className="w-full">
+        <h1>{`Slug`}</h1>
+        <input
+          className="border-2"
+          value={article.slug}
+          onChange={(event) => {
+            if (!article) return;
+            setArticle({
+              ...article,
+              slug: event.target.value,
+            });
+          }}
+        ></input>
+      </div>
+      <div className="w-full">
+        <h1>{`Content`}</h1>
+        <div
+          className="relative w-fit h-fit"
+          onDragOver={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            if (dragging) return;
+            setDraggingOver(true);
+          }}
+          onDrop={handleFileDrop}
         >
-          <div 
-            className="absolute w-full h-full backdrop-blur-sm p-4 -z-1"
+          <textarea
+            ref={textarea}
+            rows={40}
+            cols={100}
+            className="resize border-2"
+            value={article?.content}
+            onChange={(event) => {
+              if (!article) return;
+              setArticle({
+                ...article,
+                content: event.target.value,
+              });
+            }}
+            onDrop={handleFileDrop}
+          ></textarea>
+          <div
+            className={classNames(
+              "absolute top-0 left-0 w-full h-full p-4 rounded-3xl z-1",
+              {
+                ["hidden"]: !dragging,
+                ["block"]: dragging,
+              },
+            )}
+            onDrop={handleFileDrop}
+            onDragLeave={() => {
+              setDraggingOver(false);
+            }}
           >
-            <div
-              className="absolute bg-blue-300 w-full h-full top-0 left-0 opacity-50 rounded-3xl"></div>
-            <span className="relative z-1">Upload</span>
+            <div className="absolute w-full h-full backdrop-blur-sm p-4 -z-1">
+              <div className="absolute bg-blue-300 w-full h-full top-0 left-0 opacity-50 rounded-3xl"></div>
+              <span className="relative z-1">Upload</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="w-full">
-      <h1>{`Preview`}</h1>
-      <div className="editor-preview w-full border-2">
-        <Markdown components={{ img: customImage }}>
-          {articlePreview.content}
-        </Markdown>
+      <div className="w-full">
+        <h1>{`Preview`}</h1>
+        <div className="editor-preview w-full border-2">
+          <Markdown components={{ img: customImage }}>
+            {articlePreview.content}
+          </Markdown>
+        </div>
       </div>
     </div>
-  </div>
-}
+  );
+};
 
 export default Editor;

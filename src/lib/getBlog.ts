@@ -17,7 +17,7 @@ export const getBlog = async (blogId: string) => {
     title: data.blog_title,
     content: data.blog_content,
     slug: data.blog_slug,
-  }
+  };
 };
 
 export default getBlog;

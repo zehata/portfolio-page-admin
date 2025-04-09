@@ -16,15 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <div
-          className="w-screen h-screen flex"
-        >
+        <div className="w-screen h-screen flex">
           <div className="bg-gray-200 w-[min(30rem,40vw)] flex-shrink-0 h-full">
             {sidebar}
           </div>
-          <div className="w-full h-full">
-            {children}
-          </div>
+          <div className="w-full h-full">{children}</div>
         </div>
       </body>
     </html>

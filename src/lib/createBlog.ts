@@ -1,6 +1,4 @@
 "use server";
-
-import { updateBlogQuery } from "@/queries/updateBlog";
 import { createDatabaseConnectionPool } from "./createDatabaseConnectionPool";
 import { revalidateTag } from "next/cache";
 import { insertNewBlogQuery } from "@/queries/insertNewBlog";
@@ -18,15 +16,10 @@ export const createBlog = async ({
   const pool = await createDatabaseConnectionPool();
 
   const data = await pool.connect(async (connection) => {
-    return await insertNewBlogQuery(
-      connection,
-      title,
-      content,
-      slug,
-    );
+    return await insertNewBlogQuery(connection, title, content, slug);
   });
 
   await pool.end();
   revalidateTag("allBlogs");
-  redirect(`/blogs/${data.rows[0].blog_id}`)
+  redirect(`/blogs/${data.rows[0].blog_id}`);
 };
