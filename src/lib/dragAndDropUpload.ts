@@ -1,0 +1,13 @@
+"use server";
+
+import { randomUUID } from "node:crypto";
+import { uploadToCloudflare } from "./uploadToCloudflare";
+
+export const dragAndDropUpload = async (file: File) => {
+  const filenameArray = file.name.split(".");
+  const fileExtension = filenameArray[filenameArray.length - 1];
+  const filename = `${randomUUID()}.${fileExtension}`;
+  const uploadResult = await uploadToCloudflare(filename, file.type, Buffer.from(await file.arrayBuffer()));
+  if (!uploadResult) throw "Upload failed"
+  return Promise.resolve(`https://images.zehata.dev/${filename}`)
+}
