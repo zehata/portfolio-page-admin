@@ -3,21 +3,21 @@
 import { ArticleType, tables } from "@/lib/ArticleTypes";
 import { articleListItem } from "@/zod-objects/articleListItem";
 import { unstable_cache } from "next/cache";
-import { CommonQueryMethods, sql } from "slonik";
+import { DatabasePool, sql } from "slonik";
 
 export const queryAllArticles = (
-  connection: CommonQueryMethods,
+  pool: DatabasePool,
   articleType: ArticleType,
 ) =>
   unstable_cache(
-    (articleType: ArticleType) => {
-      return connection.any(sql.type(articleListItem)`
+    (pool: DatabasePool, articleType: ArticleType) => {
+      return pool.any(sql.type(articleListItem)`
         SELECT id, title
         FROM ${sql.identifier([tables[articleType]])};
       `);
     },
     [],
     { tags: [tables[articleType]] },
-  )(articleType);
+  )(pool, articleType);
 
 export default queryAllArticles;

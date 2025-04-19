@@ -1,5 +1,5 @@
 "use server";
-import { createDatabaseConnectionPool } from "./createDatabaseConnectionPool";
+import Connection from "./createDatabaseConnectionPool";
 import { revalidateTag } from "next/cache";
 import { insertNewArticleQuery } from "@/queries/insertNewArticle";
 import { redirect } from "next/navigation";
@@ -16,19 +16,18 @@ export const createArticle = async ({
   content: string;
   slug: string;
 }) => {
-  const pool = await createDatabaseConnectionPool();
+  const pool = await Connection.requestConnectionPool();
 
-  const data = await pool.connect(async (connection) => {
-    return await insertNewArticleQuery(
-      connection,
-      articleType,
-      title,
-      content,
-      slug,
-    );
-  });
+  const data = await insertNewArticleQuery(
+    pool,
+    articleType,
+    title,
+    content,
+    slug,
+  );
 
-  await pool.end();
+  await Connection.requestConnectionPoolEnd();
+
   revalidateTag(tables[articleType]);
   redirect(`/${tables[articleType]}/${data.rows[0].id}`);
 };

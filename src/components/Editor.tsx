@@ -98,7 +98,7 @@ export const Editor = ({
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-auto">
       <button
-        className="w-md border-2"
+        className="w-md border-2 active:bg-black active:text-white"
         onClick={() =>
           saveArticle({
             title: article.title,

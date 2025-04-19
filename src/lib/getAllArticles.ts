@@ -1,17 +1,15 @@
 "use server";
 
 import { queryAllArticles } from "@/queries/selectAllArticles";
-import { createDatabaseConnectionPool } from "./createDatabaseConnectionPool";
 import { ArticleType } from "./ArticleTypes";
+import Connection from "./createDatabaseConnectionPool";
 
 export const getAllArticles = async (articleType: ArticleType) => {
-  const pool = await createDatabaseConnectionPool();
+  const pool = await Connection.requestConnectionPool();
 
-  const data = await pool.connect(async (connection) => {
-    return await queryAllArticles(connection, articleType);
-  });
+  const data = await queryAllArticles(pool, articleType);
 
-  await pool.end();
+  await Connection.requestConnectionPoolEnd();
 
   return data.map((data) => {
     return {

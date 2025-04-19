@@ -1,7 +1,7 @@
 "server-only";
 
 import { ArticleType, tables } from "@/lib/ArticleTypes";
-import { CommonQueryMethods, createSqlTag } from "slonik";
+import { createSqlTag, DatabasePool } from "slonik";
 import { z } from "zod";
 
 const sql = createSqlTag({
@@ -11,14 +11,14 @@ const sql = createSqlTag({
 });
 
 export const updateArticleQuery = (
-  connection: CommonQueryMethods,
+  pool: DatabasePool,
   articleType: ArticleType,
   id: string,
   title: string,
   content: string,
   slug: string,
 ) =>
-  connection.transaction(async (transactionConnection) => {
+  pool.transaction(async (transactionConnection) => {
     return transactionConnection.query(sql.typeAlias("void")`
       UPDATE ${sql.identifier([tables[articleType]])}
       SET title=${title}, content=${content}, modified=NOW(), slug=${slug}
