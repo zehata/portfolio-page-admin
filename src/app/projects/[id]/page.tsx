@@ -6,14 +6,14 @@ import getArticle from "@/lib/getArticle";
 import writeArticle from "@/lib/writeArticle";
 import React from "react";
 
-const BlogPage = ({
+const ProjectPage = ({
   params,
 }: {
   params: Promise<{
     id: string;
   }>;
 }) => {
-  const [blog, setBlog] = React.useState<{
+  const [project, setProject] = React.useState<{
     id: string;
     title: string;
     content: string;
@@ -22,16 +22,16 @@ const BlogPage = ({
 
   React.useEffect(() => {
     params
-      .then((params) => getArticle(ArticleType.Blog, params.id))
-      .then(setBlog);
+      .then((params) => getArticle(ArticleType.Project, params.id))
+      .then(setProject);
   }, [params]);
 
   return (
     <>
-      {blog && (
+      {project && (
         <Editor
-          buttonLabel="Update blog"
-          databaseArticle={blog}
+          buttonLabel="Update project"
+          databaseArticle={project}
           saveArticle={({
             title,
             content,
@@ -42,8 +42,8 @@ const BlogPage = ({
             slug: string;
           }) => {
             writeArticle({
-              id: blog.id,
-              articleType: ArticleType.Blog,
+              articleType: ArticleType.Project,
+              id: project.id,
               title,
               content,
               slug,
@@ -55,4 +55,4 @@ const BlogPage = ({
   );
 };
 
-export default BlogPage;
+export default ProjectPage;

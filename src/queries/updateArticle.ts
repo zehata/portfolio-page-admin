@@ -1,0 +1,29 @@
+"server-only";
+
+import { ArticleType, tables } from "@/lib/ArticleTypes";
+import { CommonQueryMethods, createSqlTag } from "slonik";
+import { z } from "zod";
+
+const sql = createSqlTag({
+  typeAliases: {
+    void: z.object({}).strict(),
+  },
+});
+
+export const updateArticleQuery = (
+  connection: CommonQueryMethods,
+  articleType: ArticleType,
+  id: string,
+  title: string,
+  content: string,
+  slug: string,
+) =>
+  connection.transaction(async (transactionConnection) => {
+    return transactionConnection.query(sql.typeAlias("void")`
+      UPDATE ${sql.identifier([tables[articleType]])}
+      SET title=${title}, content=${content}, modified=NOW(), slug=${slug}
+      WHERE id=${sql.uuid(id)};
+    `);
+  });
+
+export default updateArticleQuery;

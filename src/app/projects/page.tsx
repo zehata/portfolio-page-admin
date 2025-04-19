@@ -5,10 +5,10 @@ import createArticle from "@/lib/createArticle";
 import { ArticleType } from "@/lib/ArticleTypes";
 import React from "react";
 
-const BlogPage = () => {
+const ProjectPage = () => {
   return (
     <Editor
-      buttonLabel="Create blog"
+      buttonLabel="Create project"
       databaseArticle={{
         title: "",
         content: "",
@@ -24,7 +24,7 @@ const BlogPage = () => {
         slug: string;
       }) => {
         createArticle({
-          articleType: ArticleType.Blog,
+          articleType: ArticleType.Project,
           title,
           content,
           slug,
@@ -34,4 +34,4 @@ const BlogPage = () => {
   );
 };
 
-export default BlogPage;
+export default ProjectPage;

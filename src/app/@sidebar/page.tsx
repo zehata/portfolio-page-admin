@@ -1,9 +1,11 @@
 import Sidebar from "@/components/Sidebar";
-import getAllBlogs from "@/lib/getAllBlogs";
+import { getAllArticles } from "@/lib/getAllArticles";
+import { ArticleType } from "@/lib/ArticleTypes";
 
-export const SidebarPanel = async () => {
-  const allBlogs = await getAllBlogs();
-  return <Sidebar blogItems={allBlogs} />;
+const SidebarPanel = async () => {
+  const allBlogs = await getAllArticles(ArticleType.Blog);
+  const allProjects = await getAllArticles(ArticleType.Project);
+  return <Sidebar blogItems={allBlogs} projectItems={allProjects} />;
 };
 
 export default SidebarPanel;

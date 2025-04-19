@@ -1,15 +1,18 @@
 "use server";
 
-import { updateBlogQuery } from "@/queries/updateBlog";
+import { updateArticleQuery } from "@/queries/updateArticle";
 import { createDatabaseConnectionPool } from "./createDatabaseConnectionPool";
 import { revalidateTag } from "next/cache";
+import { ArticleType, tables } from "./ArticleTypes";
 
-export const writeBlog = async ({
+export const writeArticle = async ({
+  articleType,
   id,
   title,
   content,
   slug,
 }: {
+  articleType: ArticleType;
   id: string;
   title: string;
   content: string;
@@ -18,10 +21,19 @@ export const writeBlog = async ({
   const pool = await createDatabaseConnectionPool();
 
   await pool.connect(async (connection) => {
-    return await updateBlogQuery(connection, id, title, content, slug);
+    return await updateArticleQuery(
+      connection,
+      articleType,
+      id,
+      title,
+      content,
+      slug,
+    );
   });
 
   await pool.end();
   revalidateTag(id);
-  revalidateTag("allBlogs");
+  revalidateTag(tables[articleType]);
 };
+
+export default writeArticle;
