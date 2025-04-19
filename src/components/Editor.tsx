@@ -87,6 +87,7 @@ export const Editor = ({
   const customImage = (img: ImgHTMLAttributes<HTMLImageElement>) => {
     const src = img.src;
     const alt = img.alt;
+    if (typeof src === "object" ) return <img src={src} alt={alt}/>
     if (!src) return <img alt={alt} />;
     const params = new URL(src).searchParams;
     const width = params.get("width");
