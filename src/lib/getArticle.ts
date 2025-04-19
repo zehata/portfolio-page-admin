@@ -1,6 +1,6 @@
 "use server";
 
-import queryArticle from "@/queries/selectArticle";
+import queryArticle from "@/queries/selectArticleQuery";
 import { ArticleType } from "./ArticleTypes";
 import Connection from "./createDatabaseConnectionPool";
 

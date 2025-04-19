@@ -2,7 +2,7 @@ import { ArticleType, tables } from "@/lib/ArticleTypes";
 import { articleId } from "@/zod-objects/articleId";
 import { DatabasePool, sql } from "slonik";
 
-export const insertNewArticleQuery = (
+export const insertNewArticleQuery = async (
   pool: DatabasePool,
   articleType: ArticleType,
   title: string,

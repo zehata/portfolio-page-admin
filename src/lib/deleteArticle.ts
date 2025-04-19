@@ -1,33 +1,28 @@
 "use server";
 
-import { updateArticleQuery } from "@/queries/updateArticleQuery";
 import Connection from "./createDatabaseConnectionPool";
 import { revalidateTag } from "next/cache";
 import { ArticleType, tables } from "./ArticleTypes";
+import deleteArticleQuery from "@/queries/deleteArticleQuery";
+import { redirect } from "next/navigation";
 
-export const writeArticle = async ({
+export const deleteArticle = async ({
   articleType,
   id,
-  title,
-  content,
-  slug,
 }: {
   articleType: ArticleType;
   id: string;
-  title: string;
-  content: string;
-  slug: string;
 }) => {
   const pool = await Connection.requestConnectionPool();
 
-  await updateArticleQuery(pool, articleType, id, title, content, slug);
+  await deleteArticleQuery(pool, articleType, id);
 
   await Connection.requestConnectionPoolEnd();
 
   revalidateTag(id);
   revalidateTag(tables[articleType]);
 
-  return Promise.resolve();
+  redirect(`/${tables[articleType]}`);
 };
 
-export default writeArticle;
+export default deleteArticle;

@@ -5,7 +5,7 @@ import { articleListItem } from "@/zod-objects/articleListItem";
 import { unstable_cache } from "next/cache";
 import { DatabasePool, sql } from "slonik";
 
-export const queryAllArticles = (
+export const queryAllArticles = async (
   pool: DatabasePool,
   articleType: ArticleType,
 ) =>

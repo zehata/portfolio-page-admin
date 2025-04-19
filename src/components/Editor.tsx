@@ -8,6 +8,7 @@ import { debounce } from "lodash";
 export const Editor = ({
   databaseArticle,
   saveArticle,
+  deleteArticle,
   buttonLabel,
 }: {
   databaseArticle: {
@@ -23,7 +24,8 @@ export const Editor = ({
     title: string;
     content: string;
     slug: string;
-  }) => void;
+  }) => Promise<void>;
+  deleteArticle?: () => void;
   buttonLabel: string;
 }) => {
   const [article, setArticle] = React.useState<{
@@ -96,20 +98,36 @@ export const Editor = ({
     return <img alt={alt} width={width} height={height} src={src} />;
   };
 
+  const [writing, setWriting] = React.useState<boolean>(false);
+
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-auto">
       <button
         className="w-md border-2 active:bg-black active:text-white"
-        onClick={() =>
+        onClick={() => {
+          setWriting(true);
           saveArticle({
             title: article.title,
             content: article.content,
             slug: article.slug,
-          })
-        }
+          }).then(() => setWriting(false));
+        }}
       >
         {buttonLabel}
       </button>
+      {deleteArticle ? (
+        <button
+          className="w-md border-2 active:bg-black active:text-white"
+          onClick={() => {
+            setWriting(true);
+            deleteArticle();
+          }}
+        >
+          {`Delete`}
+        </button>
+      ) : (
+        <></>
+      )}
       <div className="w-full">
         <h1>{`Title`}</h1>
         <input
@@ -193,6 +211,16 @@ export const Editor = ({
           </Markdown>
         </div>
       </div>
+      {writing ? (
+        <div className="fixed top-0 left-0 w-full h-full bg-black z-2 opacity-50 flex justify-center items-center">
+          <div className="bg-white p-4 flex items-center gap-2">
+            <div className="w-4 h-4 border-2 mask-[conic-gradient(#000_0,#000_75%,#0000_75%,#0000_100%)] animate-spin rounded-full"></div>
+            {`Writing to database`}
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

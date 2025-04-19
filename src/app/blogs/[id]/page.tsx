@@ -2,6 +2,7 @@
 
 import Editor from "@/components/Editor";
 import { ArticleType } from "@/lib/ArticleTypes";
+import deleteArticle from "@/lib/deleteArticle";
 import getArticle from "@/lib/getArticle";
 import writeArticle from "@/lib/writeArticle";
 import React from "react";
@@ -41,7 +42,7 @@ const BlogPage = ({
             content: string;
             slug: string;
           }) => {
-            writeArticle({
+            return writeArticle({
               id: blog.id,
               articleType: ArticleType.Blog,
               title,
@@ -49,6 +50,12 @@ const BlogPage = ({
               slug,
             });
           }}
+          deleteArticle={() =>
+            deleteArticle({
+              articleType: ArticleType.Blog,
+              id: blog.id,
+            })
+          }
         />
       )}
     </>

@@ -39,7 +39,7 @@ export const Sidebar = ({
           {projectItems?.map((item, index) => (
             <Link
               key={index}
-              href={`/blogs/${item.id}`}
+              href={`/projects/${item.id}`}
               className="hover:text-blue-500 underline"
             >
               {item.title}

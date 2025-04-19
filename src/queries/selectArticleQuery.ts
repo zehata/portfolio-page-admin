@@ -5,7 +5,7 @@ import { article } from "@/zod-objects/article";
 import { unstable_cache } from "next/cache";
 import { DatabasePool, sql } from "slonik";
 
-export const queryArticle = (
+export const queryArticle = async (
   pool: DatabasePool,
   articleType: ArticleType,
   blogId: string,

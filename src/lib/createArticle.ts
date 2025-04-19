@@ -1,7 +1,7 @@
 "use server";
 import Connection from "./createDatabaseConnectionPool";
 import { revalidateTag } from "next/cache";
-import { insertNewArticleQuery } from "@/queries/insertNewArticle";
+import { insertNewArticleQuery } from "@/queries/insertNewArticleQuery";
 import { redirect } from "next/navigation";
 import { ArticleType, tables } from "./ArticleTypes";
 
@@ -30,6 +30,8 @@ export const createArticle = async ({
 
   revalidateTag(tables[articleType]);
   redirect(`/${tables[articleType]}/${data.rows[0].id}`);
+
+  return Promise.resolve();
 };
 
 export default createArticle;

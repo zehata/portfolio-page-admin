@@ -23,7 +23,7 @@ const ProjectPage = () => {
         content: string;
         slug: string;
       }) => {
-        createArticle({
+        return createArticle({
           articleType: ArticleType.Project,
           title,
           content,

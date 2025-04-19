@@ -23,7 +23,7 @@ const BlogPage = () => {
         content: string;
         slug: string;
       }) => {
-        createArticle({
+        return createArticle({
           articleType: ArticleType.Blog,
           title,
           content,
