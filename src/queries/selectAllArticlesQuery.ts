@@ -2,23 +2,16 @@
 
 import { ArticleType, tables } from "@/lib/ArticleTypes";
 import { articleListItem } from "@/zod-objects/articleListItem";
-import { unstable_cache } from "next/cache";
 import { DatabasePool, sql } from "slonik";
 
 export const queryAllArticles = async (
   pool: DatabasePool,
   articleType: ArticleType,
 ) =>
-  unstable_cache(
-    (pool: DatabasePool, articleType: ArticleType) => {
-      return pool.any(sql.type(articleListItem)`
-        SELECT id, title
-        FROM ${sql.identifier([tables[articleType]])}
-        ORDER BY created DESC;
-      `);
-    },
-    [],
-    { tags: [tables[articleType]] },
-  )(pool, articleType);
+  pool.any(sql.type(articleListItem)`
+    SELECT id, title
+    FROM ${sql.identifier([tables[articleType]])}
+    ORDER BY created DESC;
+  `);
 
 export default queryAllArticles;
