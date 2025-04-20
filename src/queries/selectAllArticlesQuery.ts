@@ -13,7 +13,8 @@ export const queryAllArticles = async (
     (pool: DatabasePool, articleType: ArticleType) => {
       return pool.any(sql.type(articleListItem)`
         SELECT id, title
-        FROM ${sql.identifier([tables[articleType]])};
+        FROM ${sql.identifier([tables[articleType]])}
+        ORDER BY created DESC;
       `);
     },
     [],
