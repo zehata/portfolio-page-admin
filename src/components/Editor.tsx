@@ -59,16 +59,15 @@ export const Editor = ({
         if (item.kind != "file") return;
         const file = item.getAsFile();
         if (!file) return;
-        const form = new FormData();
-        form.append("file", file);
-        dragAndDropUpload(form).then(
-          (filename) => {
-            console.log(filename)
-          },
-          (reason) => {
-            console.log(reason);
-          },
-        );
+        dragAndDropUpload(file).then((filename) => {
+          if (!textarea.current) return;
+          const cursorStartPosition = textarea.current.selectionStart;
+          const cursorEndPosition = textarea.current.selectionEnd;
+          setArticle({
+            ...article,
+            content: `${article.content.slice(0, cursorStartPosition)}![alt text](${filename})${article.content.slice(cursorEndPosition)}`,
+          });
+        });
       });
     }
   };
