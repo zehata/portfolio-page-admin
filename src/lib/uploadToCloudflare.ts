@@ -39,7 +39,6 @@ export const uploadToCloudflare = async (
   return {
     filename,
     contentType,
-    body,
     environment: {
       region: process.env.R2_region,
       endpoint: process.env.R2_ENDPOINT,
