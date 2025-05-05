@@ -8,7 +8,6 @@ export const dragAndDropUpload = async (formData: FormData) => {
   const filenameArray = file.name.split(".");
   const fileExtension = filenameArray[filenameArray.length - 1];
   const filename = `${randomUUID()}.${fileExtension}`;
-  return filename
   const uploadResult = await uploadToCloudflare(
     filename,
     file.type,
