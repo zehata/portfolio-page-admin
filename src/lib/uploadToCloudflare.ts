@@ -53,7 +53,7 @@ export const uploadToCloudflare = async (
     } else if (caught instanceof S3ServiceException) {
       throw `Error uploading`;
     } else {
-      throw caught;
+      return caught
     }
   }
 };

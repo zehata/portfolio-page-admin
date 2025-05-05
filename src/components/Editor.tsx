@@ -67,6 +67,8 @@ export const Editor = ({
             ...article,
             content: `${article.content.slice(0, cursorStartPosition)}![alt text](${filename})${article.content.slice(cursorEndPosition)}`,
           });
+        }, (reason) => {
+          console.log(reason)
         });
       });
     }
