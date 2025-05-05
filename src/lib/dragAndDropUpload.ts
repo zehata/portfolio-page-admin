@@ -3,7 +3,8 @@
 import { randomUUID } from "node:crypto";
 import { uploadToCloudflare } from "./uploadToCloudflare";
 
-export const dragAndDropUpload = async (file: File) => {
+export const dragAndDropUpload = async (formData: FormData) => {
+  const file = formData.get("file") as File;
   const filenameArray = file.name.split(".");
   const fileExtension = filenameArray[filenameArray.length - 1];
   const filename = `${randomUUID()}.${fileExtension}`;

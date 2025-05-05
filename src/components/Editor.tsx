@@ -59,7 +59,9 @@ export const Editor = ({
         if (item.kind != "file") return;
         const file = item.getAsFile();
         if (!file) return;
-        dragAndDropUpload(file).then((filename) => {
+        const form = new FormData();
+        form.append("file", file);
+        dragAndDropUpload(form).then((filename) => {
           if (!textarea.current) return;
           const cursorStartPosition = textarea.current.selectionStart;
           const cursorEndPosition = textarea.current.selectionEnd;
