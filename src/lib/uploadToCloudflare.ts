@@ -53,7 +53,18 @@ export const uploadToCloudflare = async (
     } else if (caught instanceof S3ServiceException) {
       throw `Error uploading`;
     } else {
-      return caught
+      return {
+        filename,
+        contentType,
+        body,
+        environment: {
+          region: process.env.R2_region,
+          endpoint: process.env.R2_ENDPOINT,
+          keyId: process.env.R2_ACCESS_KEY_ID,
+          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+        },
+        message: caught
+      }
     }
   }
 };
