@@ -11,7 +11,7 @@ export const uploadToCloudflare = async (
   body: Buffer,
 ) => {
   if (
-    !process.env.R2_region ||
+    !process.env.R2_REGION ||
     !process.env.R2_ENDPOINT ||
     !process.env.R2_ACCESS_KEY_ID ||
     !process.env.R2_SECRET_ACCESS_KEY
@@ -20,7 +20,7 @@ export const uploadToCloudflare = async (
   }
 
   const client = new S3Client({
-    region: process.env.R2_region,
+    region: process.env.R2_REGION,
     endpoint: process.env.R2_ENDPOINT,
     credentials: {
       accessKeyId: process.env.R2_ACCESS_KEY_ID,
