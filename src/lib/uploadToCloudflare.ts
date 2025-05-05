@@ -38,22 +38,19 @@ export const uploadToCloudflare = async (
 
   try {
     // throw "test";
-    return await client.send(command);
+    return await client.send(command)
   } catch (caught) {
-    if (
-      caught instanceof S3ServiceException &&
-      caught.name === "EntityTooLarge"
-    ) {
-      // TODO Unlikely that confirmation pdfs are larger than 5GB.
-      //   console.error(
-      //     `Error from S3 while uploading object to ${bucketName}. \
-      // The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
-      // or the multipart upload API (5TB max).`,
-      //   );
-    } else if (caught instanceof S3ServiceException) {
-      throw `Error uploading`;
-    } else {
-      throw caught;
-    }
+    return Promise.reject({
+      message: caught,
+      filename,
+      contentType,
+      body,
+      environment: {
+        region: process.env.R2_region,
+        endpoint: process.env.R2_ENDPOINT,
+        keyId: process.env.R2_ACCESS_KEY_ID,
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+      }
+    })
   }
 };
