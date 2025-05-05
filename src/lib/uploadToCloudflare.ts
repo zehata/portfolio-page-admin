@@ -36,6 +36,18 @@ export const uploadToCloudflare = async (
     ContentType: contentType,
   });
 
+  return {
+    filename,
+    contentType,
+    body,
+    environment: {
+      region: process.env.R2_region,
+      endpoint: process.env.R2_ENDPOINT,
+      keyId: process.env.R2_ACCESS_KEY_ID,
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+    }
+  }
+
   try {
     // throw "test";
     return await client.send(command).catch((caught) => {

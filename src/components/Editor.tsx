@@ -63,13 +63,7 @@ export const Editor = ({
         form.append("file", file);
         dragAndDropUpload(form).then(
           (filename) => {
-            if (!textarea.current) return;
-            const cursorStartPosition = textarea.current.selectionStart;
-            const cursorEndPosition = textarea.current.selectionEnd;
-            setArticle({
-              ...article,
-              content: `${article.content.slice(0, cursorStartPosition)}![alt text](${filename})${article.content.slice(cursorEndPosition)}`,
-            });
+            console.log(filename)
           },
           (reason) => {
             console.log(reason);

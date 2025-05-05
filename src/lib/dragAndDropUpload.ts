@@ -13,6 +13,7 @@ export const dragAndDropUpload = async (formData: FormData) => {
     file.type,
     Buffer.from(await file.arrayBuffer()),
   );
+  return uploadResult
   if (!uploadResult) return Promise.reject(uploadResult);
   return Promise.resolve(`https://images.zehata.dev/${filename}`);
 };
