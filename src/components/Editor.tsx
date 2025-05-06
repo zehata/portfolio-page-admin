@@ -91,7 +91,9 @@ export const Editor = ({
     const alt = img.alt;
     if (typeof src === "object") return <img src={src} alt={alt} />;
     if (!src) return <img alt={alt} />;
-    const params = new URL(src).searchParams;
+    const url = URL.parse(src);
+    if (!url) return <img src={src} alt={alt} />;
+    const params = url.searchParams;
     const width = params.get("width");
     const height = params.get("height");
     if (!width || !height) return <img alt={alt} src={src} />;
