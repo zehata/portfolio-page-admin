@@ -1,3 +1,7 @@
+"use client";
+
+import { ArticleType } from "@/lib/ArticleTypes";
+import { revalidateItems } from "@/lib/revalidateItems";
 import Link from "next/link";
 import React from "react";
 
@@ -17,7 +21,15 @@ export const Sidebar = ({
   return (
     <>
       <div className="p-4">
-        <div className="w-full border-b-2 mb-2">Blogs</div>
+        <div className="w-full flex justify-between border-b-2 mb-2 pb-2">
+          Blogs
+          <button
+            onClick={() => revalidateItems(ArticleType.Blog)}
+            className="px-2 border-2 active:bg-black active:text-white"
+          >
+            Refresh
+          </button>
+        </div>
         <div className="flex flex-col space-2">
           {blogItems?.map((item, index) => (
             <Link
@@ -34,7 +46,15 @@ export const Sidebar = ({
         </div>
       </div>
       <div className="p-4">
-        <div className="w-full border-b-2 mb-2">Projects</div>
+        <div className="w-full flex justify-between border-b-2 mb-2 pb-2">
+          Projects
+          <button
+            onClick={() => revalidateItems(ArticleType.Project)}
+            className="px-2 border-2 active:bg-black active:text-white"
+          >
+            Refresh
+          </button>
+        </div>
         <div className="flex flex-col space-2">
           {projectItems?.map((item, index) => (
             <Link

@@ -17,7 +17,7 @@ const RootLayout = ({
     <html lang="en">
       <body className="antialiased">
         <div className="w-screen h-screen flex">
-          <div className="bg-gray-200 w-[min(30rem,40vw)] flex-shrink-0 h-full">
+          <div className="bg-gray-200 w-[min(20rem,20vw)] flex-shrink-0 h-full">
             {sidebar}
           </div>
           <div className="w-full h-full">{children}</div>

@@ -25,9 +25,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+@layer base {
+  img, video {
+    height: "";
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+}
+
 @layer components {
+  .editor-preview h1, h2 {
+    margin-top: 2rem;
+    line-height: 0;
+  }
+
   .editor-preview a {
-    color: var(--color-blue-700)
+    color: var(--color-blue-700);
   }
 
   .editor-preview a:hover {

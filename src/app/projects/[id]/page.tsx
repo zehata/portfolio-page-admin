@@ -4,6 +4,7 @@ import Editor from "@/components/Editor";
 import { ArticleType } from "@/lib/ArticleTypes";
 import deleteArticle from "@/lib/deleteArticle";
 import getArticle from "@/lib/getArticle";
+import { revalidateArticle } from "@/lib/revalidateArticle";
 import writeArticle from "@/lib/writeArticle";
 import React from "react";
 
@@ -50,6 +51,7 @@ const ProjectPage = ({
               slug,
             });
           }}
+          revalidateArticle={() => revalidateArticle(project.id)}
           deleteArticle={() =>
             deleteArticle({
               articleType: ArticleType.Project,

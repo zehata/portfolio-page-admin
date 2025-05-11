@@ -4,6 +4,7 @@ import Editor from "@/components/Editor";
 import { ArticleType } from "@/lib/ArticleTypes";
 import deleteArticle from "@/lib/deleteArticle";
 import getArticle from "@/lib/getArticle";
+import { revalidateArticle } from "@/lib/revalidateArticle";
 import writeArticle from "@/lib/writeArticle";
 import React from "react";
 
@@ -41,15 +42,16 @@ const BlogPage = ({
             title: string;
             content: string;
             slug: string;
-          }) => {
-            return writeArticle({
+          }) =>
+            writeArticle({
               id: blog.id,
               articleType: ArticleType.Blog,
               title,
               content,
               slug,
-            });
-          }}
+            })
+          }
+          revalidateArticle={() => revalidateArticle(blog.id)}
           deleteArticle={() =>
             deleteArticle({
               articleType: ArticleType.Blog,
