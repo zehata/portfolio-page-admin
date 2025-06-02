@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { GlobalContextProvider } from "@/components/GlobalContext";
+import App from "@/components/App";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,12 +18,9 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body className="antialiased">
-        <div className="w-screen h-screen flex">
-          <div className="bg-gray-200 w-[min(20rem,20vw)] flex-shrink-0 h-full">
-            {sidebar}
-          </div>
-          <div className="w-full h-full">{children}</div>
-        </div>
+        <GlobalContextProvider>
+          <App sidebar={sidebar}>{children}</App>
+        </GlobalContextProvider>
       </body>
     </html>
   );

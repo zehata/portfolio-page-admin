@@ -2,9 +2,11 @@
 import React, { ImgHTMLAttributes } from "react";
 import classNames from "classnames";
 import Markdown from "react-markdown";
-import { debounce } from "lodash";
+import { debounce, isEqual } from "lodash";
 import Mousetrap from "mousetrap";
 import { upload } from "@/lib/upload";
+
+const preventEventDefault = (event: Event) => event.preventDefault();
 
 export const Editor = ({
   databaseArticle,
@@ -115,13 +117,11 @@ export const Editor = ({
 
   React.useEffect(() => {
     renderPreview(article);
-    if (article === databaseArticle) return;
-    window.addEventListener("beforeunload", (event) => event.preventDefault());
+    if (isEqual(article, databaseArticle)) return;
+    window.addEventListener("beforeunload", preventEventDefault);
 
     return () => {
-      window.removeEventListener("beforeunload", (event) =>
-        event.preventDefault(),
-      );
+      window.removeEventListener("beforeunload", preventEventDefault);
     };
   }, [renderPreview, article, databaseArticle]);
 

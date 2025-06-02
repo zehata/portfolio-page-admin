@@ -3,7 +3,8 @@
 import { ArticleType } from "@/lib/ArticleTypes";
 import { revalidateItems } from "@/lib/revalidateItems";
 import Link from "next/link";
-import React from "react";
+import React, { ChangeEvent } from "react";
+import GlobalContext from "./GlobalContext";
 
 export const Sidebar = ({
   blogItems,
@@ -18,8 +19,24 @@ export const Sidebar = ({
     title: string;
   }[];
 }) => {
+  const darkMode = React.useContext(GlobalContext)?.darkMode;
+
   return (
     <>
+      {darkMode && (
+        <div className="p-4">
+          <div className="w-full flex justify-between border-b-2 mb-2 pb-2">
+            {`Dark mode`}
+            <input
+              type="checkbox"
+              checked={darkMode.darkMode ?? false}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                darkMode.setDarkMode(event.target.checked);
+              }}
+            ></input>
+          </div>
+        </div>
+      )}
       <div className="p-4">
         <div className="w-full flex justify-between border-b-2 mb-2 pb-2">
           Blogs
