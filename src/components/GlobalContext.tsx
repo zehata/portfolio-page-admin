@@ -20,7 +20,6 @@ export const GlobalContextProvider = ({
 
   React.useEffect(() => {
     const localStorageDarkMode = localStorage.getItem("dark-mode");
-    console.log(localStorageDarkMode);
     if (isNull(localStorageDarkMode)) {
       setDarkMode(false);
       return;

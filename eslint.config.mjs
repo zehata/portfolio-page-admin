@@ -20,6 +20,7 @@ const eslintConfig = [
       "@next/next/no-img-element": "off",
       "@typescript-eslint/no-unused-vars": "warn",
       "prettier/prettier": "warn",
+      "no-console": "error",
     },
   }),
 ];
