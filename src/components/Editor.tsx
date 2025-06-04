@@ -79,9 +79,13 @@ export const Editor = ({
             const fileExtension = imageType === "svg+xml" ? "svg" : imageType;
             imageArrayBuffer
               .then((arrayBuffer) =>
-                upload(mimeType, fileExtension, arrayBuffer),
+                upload(mimeType, fileExtension, arrayBuffer).catch((e) => {
+                  return Promise.reject(e);
+                }),
               )
-              .then(handleUploadResult);
+              .then(handleUploadResult, () =>
+                alert("Upload failed. Check image size"),
+              );
             break;
           }
         }
@@ -104,9 +108,15 @@ export const Editor = ({
             .then((arrayBuffer) => {
               const filenameArray = file.name.split(".");
               const fileExtension = filenameArray[filenameArray.length - 1];
-              return upload(file.type, fileExtension, arrayBuffer);
+              return upload(file.type, fileExtension, arrayBuffer).catch(
+                (e) => {
+                  return Promise.reject(e);
+                },
+              );
             })
-            .then(handleUploadResult);
+            .then(handleUploadResult, () =>
+              alert("Upload failed. Check image size"),
+            );
         });
       }
     },
@@ -295,7 +305,7 @@ export const Editor = ({
                 setDraggingOver(false);
               }}
             >
-              <div className="absolute w-full h-full backdrop-blur-sm p-4 -z-1">
+              <div className="relative w-full h-full backdrop-blur-sm p-4 -z-1">
                 <div className="absolute bg-blue-300 w-full h-full top-0 left-0 opacity-50 rounded-3xl"></div>
                 <span className="relative z-1">Upload</span>
               </div>
