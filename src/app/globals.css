@@ -73,4 +73,29 @@ body {
   .editor-preview a:hover {
     text-decoration: underline;
   }
+
+  .editor-preview table {
+    @apply relative;
+  }
+
+  .editor-preview table::before {
+    content: "";
+    @apply absolute w-full h-full border-2 rounded-lg;
+  }
+
+  .editor-preview tr:first-child td:first-child {
+    @apply p-2 rounded-tl-lg;
+  }
+
+  .editor-preview tr:first-child td:last-child {
+    @apply p-2 rounded-tr-lg;
+  }
+
+  .editor-preview tr:last-child td:first-child {
+    @apply p-2 rounded-bl-lg;
+  }
+
+  .editor-preview tr:last-child td:last-child {
+    @apply p-2 rounded-br-lg;
+  }
 }

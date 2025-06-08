@@ -2,6 +2,7 @@
 import React, { ImgHTMLAttributes } from "react";
 import classNames from "classnames";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { debounce, isEqual } from "lodash";
 import Mousetrap from "mousetrap";
 import { upload } from "@/lib/upload";
@@ -315,7 +316,10 @@ export const Editor = ({
         <div className="w-full">
           <h1>{`Preview`}</h1>
           <div className="editor-preview border-2 whitespace-pre-wrap">
-            <Markdown components={{ img: customImage }}>
+            <Markdown
+              remarkPlugins={[remarkGfm]}
+              components={{ img: customImage }}
+            >
               {articlePreview.content}
             </Markdown>
           </div>
