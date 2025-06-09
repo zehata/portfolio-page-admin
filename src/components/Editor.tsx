@@ -317,6 +317,7 @@ export const Editor = ({
           <div className="editor-preview border-2 whitespace-pre-wrap">
             <Markdown components={{ img: customImage }}>
               {articlePreview.content}
+              
             </Markdown>
           </div>
         </div>
