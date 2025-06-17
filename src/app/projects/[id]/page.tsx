@@ -1,7 +1,7 @@
 "use client";
 
 import Editor from "@/components/Editor";
-import { ArticleType } from "@/lib/ArticleTypes";
+import { ArticleType } from "@/lib/types";
 import deleteArticle from "@/lib/deleteArticle";
 import getArticle from "@/lib/getArticle";
 import { revalidateArticle } from "@/lib/revalidateArticle";

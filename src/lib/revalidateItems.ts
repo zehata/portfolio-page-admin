@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { ArticleType, tables } from "./ArticleTypes";
+import { ArticleType, tables } from "./types";
 
 export const revalidateItems = async (articleType: ArticleType) => {
   revalidateTag(tables[articleType]);

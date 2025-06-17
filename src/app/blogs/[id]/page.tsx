@@ -1,8 +1,10 @@
 "use client";
 
 import Editor from "@/components/Editor";
-import { ArticleType } from "@/lib/ArticleTypes";
+import { ArticleType, Stamps } from "@/lib/types";
+import createArticleStamp from "@/lib/createArticleStamp";
 import deleteArticle from "@/lib/deleteArticle";
+import deleteStamp from "@/lib/deleteStamp";
 import getArticle from "@/lib/getArticle";
 import { revalidateArticle } from "@/lib/revalidateArticle";
 import writeArticle from "@/lib/writeArticle";
@@ -20,6 +22,7 @@ const BlogPage = ({
     title: string;
     content: string;
     slug: string;
+    stamps: Stamps;
   }>();
 
   React.useEffect(() => {
@@ -38,10 +41,12 @@ const BlogPage = ({
             title,
             content,
             slug,
+            stamps,
           }: {
             title: string;
             content: string;
             slug: string;
+            stamps: Stamps;
           }) =>
             writeArticle({
               id: blog.id,
@@ -49,6 +54,7 @@ const BlogPage = ({
               title,
               content,
               slug,
+              stamps,
             })
           }
           revalidateArticle={() => revalidateArticle(blog.id)}
@@ -56,6 +62,19 @@ const BlogPage = ({
             deleteArticle({
               articleType: ArticleType.Blog,
               id: blog.id,
+            })
+          }
+          createStamp={() =>
+            createArticleStamp({
+              articleType: ArticleType.Blog,
+              articleId: blog.id,
+            })
+          }
+          deleteStamp={(id: string) =>
+            deleteStamp({
+              articleType: ArticleType.Blog,
+              articleId: blog.id,
+              id,
             })
           }
         />

@@ -1,4 +1,4 @@
-import { ArticleType, tables } from "@/lib/ArticleTypes";
+import { ArticleType, tables } from "@/lib/types";
 import { articleId } from "@/zod-objects/articleId";
 import { DatabasePool, sql } from "slonik";
 

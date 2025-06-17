@@ -2,9 +2,10 @@
 import React, { ImgHTMLAttributes } from "react";
 import classNames from "classnames";
 import Markdown from "react-markdown";
-import { debounce, isEqual } from "lodash";
+import { debounce, isEqual, omit } from "lodash";
 import Mousetrap from "mousetrap";
 import { upload } from "@/lib/upload";
+import { StampIcon, stampIcon, Stamps } from "@/lib/types";
 
 const preventEventDefault = (event: Event) => event.preventDefault();
 
@@ -14,42 +15,59 @@ export const Editor = ({
   revalidateArticle,
   deleteArticle,
   buttonLabel,
+  createStamp,
+  deleteStamp,
 }: {
   databaseArticle: {
     title: string;
     content: string;
     slug: string;
+    stamps: Stamps;
   };
   saveArticle: ({
     title,
     content,
     slug,
+    stamps,
   }: {
     title: string;
     content: string;
     slug: string;
+    stamps: Stamps;
   }) => Promise<void>;
   revalidateArticle?: () => Promise<void>;
   deleteArticle?: () => void;
   buttonLabel: string;
+  createStamp?: () => Promise<string>;
+  deleteStamp?: (id: string) => Promise<void>;
 }) => {
   const [article, setArticle] = React.useState<{
     title: string;
     content: string;
     slug: string;
+    stamps: Stamps;
   }>(databaseArticle);
 
   const [articlePreview, setArticlePreview] = React.useState<{
     title: string;
     content: string;
     slug: string;
+    stamps: Stamps;
   }>(databaseArticle);
 
   const renderPreview = React.useMemo(
     () =>
-      debounce((article: { title: string; content: string; slug: string }) => {
-        setArticlePreview(article);
-      }, 1000),
+      debounce(
+        (article: {
+          title: string;
+          content: string;
+          slug: string;
+          stamps: Stamps;
+        }) => {
+          setArticlePreview(article);
+        },
+        1000,
+      ),
     [],
   );
 
@@ -169,6 +187,7 @@ export const Editor = ({
       title: article.title,
       content: article.content,
       slug: article.slug,
+      stamps: article.stamps,
     }).then(() => setWriting(false));
   }, [setWriting, saveArticle, article]);
 
@@ -264,6 +283,133 @@ export const Editor = ({
             });
           }}
         ></input>
+      </div>
+      <div className="w-full">
+        <h1>{`Stamps`}</h1>
+        <div className="flex flex-col gap-4">
+          {Object.entries(article.stamps).map(([id, stamp]) => {
+            return (
+              <div key={id} className="flex justify-center gap-4">
+                <input
+                  className="w-full border-2"
+                  onChange={(event) => {
+                    if (!article) return;
+                    setArticle({
+                      ...article,
+                      stamps: {
+                        ...article.stamps,
+                        [id]: {
+                          ...article.stamps[id],
+                          label: event.target.value,
+                        },
+                      },
+                    });
+                  }}
+                  value={stamp.label}
+                ></input>
+                <input
+                  className="w-full border-2"
+                  onChange={(event) => {
+                    if (!article) return;
+                    setArticle({
+                      ...article,
+                      stamps: {
+                        ...article.stamps,
+                        [id]: {
+                          ...article.stamps[id],
+                          value: event.target.value,
+                        },
+                      },
+                    });
+                  }}
+                  value={stamp.value}
+                ></input>
+                <input
+                  className="w-full border-2"
+                  onChange={(event) => {
+                    if (!article) return;
+                    setArticle({
+                      ...article,
+                      stamps: {
+                        ...article.stamps,
+                        [id]: {
+                          ...article.stamps[id],
+                          color: event.target.value,
+                        },
+                      },
+                    });
+                  }}
+                  value={stamp.color}
+                ></input>
+                <select
+                  className="w-full border-2"
+                  onChange={(event) => {
+                    if (!article) return;
+                    setArticle({
+                      ...article,
+                      stamps: {
+                        ...article.stamps,
+                        [id]: {
+                          ...article.stamps[id],
+                          icon: event.target.value as StampIcon,
+                        },
+                      },
+                    });
+                  }}
+                  value={stamp.icon}
+                >
+                  {stampIcon.map((icon) => (
+                    <option key={icon} value={icon}>
+                      {icon}
+                    </option>
+                  ))}
+                </select>
+                {deleteStamp ? (
+                  <button
+                    className="w-md border-2 active:bg-black active:text-white"
+                    onClick={() => {
+                      deleteStamp(id);
+                      setArticle({
+                        ...article,
+                        stamps: omit(article.stamps, [id]),
+                      });
+                    }}
+                  >
+                    {`Delete`}
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </div>
+            );
+          })}
+          {createStamp ? (
+            <button
+              className="w-md border-2 active:bg-black active:text-white"
+              onClick={() =>
+                createStamp().then((id) =>
+                  setArticle({
+                    ...article,
+                    stamps: {
+                      ...article.stamps,
+                      [id]: {
+                        id,
+                        label: "",
+                        value: "",
+                        color: "#000",
+                        icon: "",
+                      },
+                    },
+                  }),
+                )
+              }
+            >
+              {`Add Stamp`}
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
       </div>
       <div className="flex justify-start items-start gap-2">
         <div>

@@ -1,7 +1,7 @@
 "use server";
 
 import { queryAllArticles } from "@/queries/selectAllArticlesQuery";
-import { ArticleType, tables } from "./ArticleTypes";
+import { ArticleType, tables } from "./types";
 import Connection from "./createDatabaseConnectionPool";
 import { unstable_cache } from "next/cache";
 

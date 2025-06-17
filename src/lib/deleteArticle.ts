@@ -2,7 +2,7 @@
 
 import Connection from "./createDatabaseConnectionPool";
 import { revalidateTag } from "next/cache";
-import { ArticleType, tables } from "./ArticleTypes";
+import { ArticleType, tables } from "./types";
 import deleteArticleQuery from "@/queries/deleteArticleQuery";
 import { redirect } from "next/navigation";
 
