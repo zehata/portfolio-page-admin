@@ -13,6 +13,7 @@ const BlogPage = () => {
         title: "",
         content: "",
         slug: "",
+        stamps: {},
       }}
       saveArticle={({
         title,

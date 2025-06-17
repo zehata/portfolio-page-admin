@@ -13,6 +13,7 @@ const ProjectPage = () => {
         title: "",
         content: "",
         slug: "",
+        stamps: {},
       }}
       saveArticle={({
         title,
