@@ -1,28 +1,32 @@
 "use server";
 
 import queryArticle from "@/queries/selectArticleQuery";
-import { ArticleType } from "./ArticleTypes";
+import { ArticleType } from "./types";
 import Connection from "./createDatabaseConnectionPool";
 import { unstable_cache } from "next/cache";
+import queryArticleStamps from "@/queries/selectArticleStampsQuery";
+import { keyBy } from "lodash";
 
-export const getArticle = async (articleType: ArticleType, blogId: string) =>
+export const getArticle = async (articleType: ArticleType, id: string) =>
   unstable_cache(
-    async (articleType: ArticleType, blogId: string) => {
+    async (articleType: ArticleType, id: string) => {
       const pool = await Connection.requestConnectionPool();
 
-      const data = await queryArticle(pool, articleType, blogId);
+      const articleData = await queryArticle(pool, articleType, id);
+      const stampsData = await queryArticleStamps(pool, articleType, id);
 
       await Connection.requestConnectionPoolEnd();
 
       return {
-        id: data.id,
-        title: data.title,
-        content: data.content,
-        slug: data.slug,
+        id: articleData.id,
+        title: articleData.title,
+        content: articleData.content,
+        slug: articleData.slug,
+        stamps: keyBy(stampsData, "id"),
       };
     },
     [],
-    { tags: [blogId] },
-  )(articleType, blogId);
+    { tags: [id] },
+  )(articleType, id);
 
 export default getArticle;

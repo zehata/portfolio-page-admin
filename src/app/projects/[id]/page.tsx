@@ -1,12 +1,14 @@
 "use client";
 
 import Editor from "@/components/Editor";
-import { ArticleType } from "@/lib/ArticleTypes";
+import { ArticleType, Stamps } from "@/lib/types";
 import deleteArticle from "@/lib/deleteArticle";
 import getArticle from "@/lib/getArticle";
 import { revalidateArticle } from "@/lib/revalidateArticle";
 import writeArticle from "@/lib/writeArticle";
 import React from "react";
+import createArticleStamp from "@/lib/createArticleStamp";
+import deleteStamp from "@/lib/deleteStamp";
 
 const ProjectPage = ({
   params,
@@ -20,6 +22,7 @@ const ProjectPage = ({
     title: string;
     content: string;
     slug: string;
+    stamps: Stamps;
   }>();
 
   React.useEffect(() => {
@@ -38,10 +41,12 @@ const ProjectPage = ({
             title,
             content,
             slug,
+            stamps,
           }: {
             title: string;
             content: string;
             slug: string;
+            stamps: Stamps;
           }) => {
             return writeArticle({
               articleType: ArticleType.Project,
@@ -49,6 +54,7 @@ const ProjectPage = ({
               title,
               content,
               slug,
+              stamps,
             });
           }}
           revalidateArticle={() => revalidateArticle(project.id)}
@@ -56,6 +62,19 @@ const ProjectPage = ({
             deleteArticle({
               articleType: ArticleType.Project,
               id: project.id,
+            })
+          }
+          createStamp={() =>
+            createArticleStamp({
+              articleType: ArticleType.Project,
+              articleId: project.id,
+            })
+          }
+          deleteStamp={(id: string) =>
+            deleteStamp({
+              articleType: ArticleType.Project,
+              articleId: project.id,
+              id,
             })
           }
         />

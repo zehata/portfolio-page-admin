@@ -1,6 +1,6 @@
 "use client";
 
-import { ArticleType } from "@/lib/ArticleTypes";
+import { ArticleType } from "@/lib/types";
 import { revalidateItems } from "@/lib/revalidateItems";
 import Link from "next/link";
 import React, { ChangeEvent } from "react";

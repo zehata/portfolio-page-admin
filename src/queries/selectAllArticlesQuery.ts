@@ -1,6 +1,6 @@
 "server-only";
 
-import { ArticleType, tables } from "@/lib/ArticleTypes";
+import { ArticleType, tables } from "@/lib/types";
 import { articleListItem } from "@/zod-objects/articleListItem";
 import { DatabasePool, sql } from "slonik";
 

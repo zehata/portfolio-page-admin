@@ -1,6 +1,6 @@
 import Sidebar from "@/components/Sidebar";
 import { getAllArticles } from "@/lib/getAllArticles";
-import { ArticleType } from "@/lib/ArticleTypes";
+import { ArticleType } from "@/lib/types";
 
 const SidebarPanel = async () => {
   const allBlogs = await getAllArticles(ArticleType.Blog);

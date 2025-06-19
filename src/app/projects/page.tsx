@@ -2,7 +2,7 @@
 
 import Editor from "@/components/Editor";
 import createArticle from "@/lib/createArticle";
-import { ArticleType } from "@/lib/ArticleTypes";
+import { ArticleType } from "@/lib/types";
 import React from "react";
 
 const ProjectPage = () => {
@@ -13,6 +13,7 @@ const ProjectPage = () => {
         title: "",
         content: "",
         slug: "",
+        stamps: {},
       }}
       saveArticle={({
         title,

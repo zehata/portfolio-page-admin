@@ -3,7 +3,7 @@ import Connection from "./createDatabaseConnectionPool";
 import { revalidateTag } from "next/cache";
 import { insertNewArticleQuery } from "@/queries/insertNewArticleQuery";
 import { redirect } from "next/navigation";
-import { ArticleType, tables } from "./ArticleTypes";
+import { ArticleType, tables } from "./types";
 
 export const createArticle = async ({
   articleType,
