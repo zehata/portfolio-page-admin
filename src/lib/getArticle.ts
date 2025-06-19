@@ -12,8 +12,10 @@ export const getArticle = async (articleType: ArticleType, id: string) =>
     async (articleType: ArticleType, id: string) => {
       const pool = await Connection.requestConnectionPool();
 
-      const articleData = await queryArticle(pool, articleType, id);
-      const stampsData = await queryArticleStamps(pool, articleType, id);
+      const [articleData, stampsData] = await Promise.all([
+        queryArticle(pool, articleType, id),
+        queryArticleStamps(pool, articleType, id),
+      ]);
 
       await Connection.requestConnectionPoolEnd();
 

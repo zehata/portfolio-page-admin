@@ -7,12 +7,12 @@ import { DatabasePool, sql } from "slonik";
 export const queryArticleStamps = async (
   pool: DatabasePool,
   articleType: ArticleType,
-  blogId: string,
+  articleId: string,
 ) =>
   pool.any(sql.type(stamps)`
     SELECT id, label, value, color, icon
     FROM ${sql.identifier([stampsTables[articleType]])}
-    WHERE article_id=${sql.uuid(blogId)};
+    WHERE article_id=${sql.uuid(articleId)};
   `);
 
 export default queryArticleStamps;
