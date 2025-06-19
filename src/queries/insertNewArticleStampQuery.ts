@@ -9,8 +9,8 @@ export const insertNewArticleStampQuery = async (
 ) =>
   pool.transaction(async (transactionConnection) => {
     return transactionConnection.query(sql.type(stampId)`
-      INSERT INTO ${sql.identifier([stampsTables[articleType]])} (article_id, label, value)
-      VALUES (${sql.uuid(articleId)}, '', '')
+      INSERT INTO ${sql.identifier([stampsTables[articleType]])} (article_id, label, value, color, icon)
+      VALUES (${sql.uuid(articleId)}, '', '', '#000', '')
       RETURNING id;
     `);
   });
