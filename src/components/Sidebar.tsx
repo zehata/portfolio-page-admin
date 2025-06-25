@@ -22,7 +22,7 @@ export const Sidebar = ({
   const darkMode = React.useContext(GlobalContext)?.darkMode;
 
   return (
-    <>
+    <div className="h-full overflow-y-auto">
       {darkMode && (
         <div className="p-4">
           <div className="w-full flex justify-between border-b-2 mb-2 pb-2">
@@ -87,7 +87,7 @@ export const Sidebar = ({
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
