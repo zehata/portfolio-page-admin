@@ -61,16 +61,22 @@ body {
 }
 
 @layer components {
-  .editor-preview h1, h2 {
-    margin-top: 2rem;
-    line-height: 0;
-  }
+  .editor-preview {
+    & h1, h2 {
+      margin-top: 2rem;
+      line-height: 0;
+    }
 
-  .editor-preview a {
-    color: var(--color-blue-700);
-  }
+    & a {
+      color: var(--color-blue-700);
+    }
 
-  .editor-preview a:hover {
-    text-decoration: underline;
+    & a:hover {
+      text-decoration: underline;
+    }
+
+    & li {
+      list-style: disc inside;
+    }
   }
 }
