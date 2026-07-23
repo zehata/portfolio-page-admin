@@ -2,7 +2,7 @@
 
 import { updateArticleQuery } from "@/queries/updateArticleQuery";
 import Connection from "./createDatabaseConnectionPool";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { ArticleType, Stamps, tables } from "./types";
 import updateStampQuery from "@/queries/updateStampQuery";
 
@@ -28,8 +28,8 @@ export const writeArticle = async ({
 
   await Connection.requestConnectionPoolEnd();
 
-  revalidateTag(id);
-  revalidateTag(tables[articleType]);
+  updateTag(id);
+  updateTag(tables[articleType]);
 
   return Promise.resolve();
 };

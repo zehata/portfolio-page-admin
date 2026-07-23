@@ -1,5 +1,4 @@
 "use client";
-import { isNull } from "lodash";
 import React, { createContext } from "react";
 
 interface GlobalState {
@@ -19,12 +18,11 @@ export const GlobalContextProvider = ({
   const [darkMode, setDarkMode] = React.useState<boolean | null>(null);
 
   React.useEffect(() => {
-    const localStorageDarkMode = localStorage.getItem("dark-mode");
-    if (isNull(localStorageDarkMode)) {
-      setDarkMode(false);
-      return;
-    }
-    setDarkMode(JSON.parse(localStorageDarkMode));
+    Promise.resolve(localStorage.getItem("dark-mode")).then(
+      (localStorageDarkMode) => {
+        setDarkMode(localStorageDarkMode === "true");
+      },
+    );
   }, [setDarkMode]);
 
   React.useEffect(() => {

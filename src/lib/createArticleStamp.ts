@@ -1,6 +1,6 @@
 "use server";
 import Connection from "./createDatabaseConnectionPool";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { ArticleType } from "./types";
 import insertNewArticleStampQuery from "@/queries/insertNewArticleStampQuery";
 
@@ -17,7 +17,7 @@ export const createArticleStamp = async ({
 
   await Connection.requestConnectionPoolEnd();
 
-  revalidateTag(articleId);
+  updateTag(articleId);
 
   return Promise.resolve(data.rows[0].id);
 };

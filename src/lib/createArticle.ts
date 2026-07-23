@@ -1,9 +1,9 @@
 "use server";
 import Connection from "./createDatabaseConnectionPool";
-import { revalidateTag } from "next/cache";
 import { insertNewArticleQuery } from "@/queries/insertNewArticleQuery";
 import { redirect } from "next/navigation";
 import { ArticleType, tables } from "./types";
+import { updateTag } from "next/cache";
 
 export const createArticle = async ({
   articleType,
@@ -28,7 +28,7 @@ export const createArticle = async ({
 
   await Connection.requestConnectionPoolEnd();
 
-  revalidateTag(tables[articleType]);
+  updateTag(tables[articleType]);
   redirect(`/${tables[articleType]}/${data.rows[0].id}`);
 
   return Promise.resolve();

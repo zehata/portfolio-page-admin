@@ -1,7 +1,7 @@
 "use server";
 
 import Connection from "./createDatabaseConnectionPool";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { ArticleType, tables } from "./types";
 import deleteArticleQuery from "@/queries/deleteArticleQuery";
 import { redirect } from "next/navigation";
@@ -19,8 +19,8 @@ export const deleteArticle = async ({
 
   await Connection.requestConnectionPoolEnd();
 
-  revalidateTag(id);
-  revalidateTag(tables[articleType]);
+  updateTag(id);
+  updateTag(tables[articleType]);
 
   redirect(`/${tables[articleType]}`);
 };

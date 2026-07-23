@@ -11,17 +11,28 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [...nextCoreWebVitals, ...nextTypescript, ...compat.config({
-  extends: ["plugin:prettier/recommended"],
+const eslintConfig = [
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+  ...compat.config({
+    extends: ["plugin:prettier/recommended"],
 
-  rules: {
-    "@next/next/no-img-element": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "prettier/prettier": "error",
-    "no-console": "error",
-  }
-}), {
-  ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"]
-}];
+    rules: {
+      "@next/next/no-img-element": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "prettier/prettier": "error",
+      "no-console": "error",
+    },
+  }),
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
+  },
+];
 
 export default eslintConfig;

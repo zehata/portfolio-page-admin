@@ -1,7 +1,7 @@
 "use server";
 
 import Connection from "./createDatabaseConnectionPool";
-import { revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 import { ArticleType } from "./types";
 import deleteArticleStampQuery from "@/queries/deleteArticleStampQuery";
 
@@ -20,7 +20,7 @@ export const deleteStamp = async ({
 
   await Connection.requestConnectionPoolEnd();
 
-  revalidateTag(articleId);
+  updateTag(articleId);
 };
 
 export default deleteStamp;
