@@ -1,8 +1,8 @@
 "use server";
-import Connection from "./createDatabaseConnectionPool";
 import { updateTag } from "next/cache";
 import { ArticleType } from "./types";
 import insertNewArticleStampQuery from "@/queries/insertNewArticleStampQuery";
+import { createConnectionPool, endConnectionPool } from "./connections";
 
 export const createArticleStamp = async ({
   articleType,
@@ -11,11 +11,11 @@ export const createArticleStamp = async ({
   articleType: ArticleType;
   articleId: string;
 }) => {
-  const pool = await Connection.requestConnectionPool();
+  const pool = await createConnectionPool();
 
   const data = await insertNewArticleStampQuery(pool, articleType, articleId);
 
-  await Connection.requestConnectionPoolEnd();
+  await endConnectionPool(pool);
 
   updateTag(articleId);
 

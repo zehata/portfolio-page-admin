@@ -1,10 +1,11 @@
 "use server";
 
 import { updateArticleQuery } from "@/queries/updateArticleQuery";
-import Connection from "./createDatabaseConnectionPool";
 import { updateTag } from "next/cache";
 import { ArticleType, Stamps, tables } from "./types";
 import updateStampQuery from "@/queries/updateStampQuery";
+import { isEmpty } from "lodash";
+import { createConnectionPool, endConnectionPool } from "./connections";
 
 export const writeArticle = async ({
   articleType,
@@ -21,12 +22,14 @@ export const writeArticle = async ({
   slug: string;
   stamps: Stamps;
 }) => {
-  const pool = await Connection.requestConnectionPool();
+  const pool = await createConnectionPool();
 
   await updateArticleQuery(pool, articleType, id, title, content, slug);
-  await updateStampQuery(pool, articleType, stamps);
+  if (!isEmpty(stamps)) {
+    await updateStampQuery(pool, articleType, stamps);
+  }
 
-  await Connection.requestConnectionPoolEnd();
+  await endConnectionPool(pool);
 
   updateTag(id);
   updateTag(tables[articleType]);

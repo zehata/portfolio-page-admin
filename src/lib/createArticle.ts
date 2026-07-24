@@ -1,9 +1,9 @@
 "use server";
-import Connection from "./createDatabaseConnectionPool";
 import { insertNewArticleQuery } from "@/queries/insertNewArticleQuery";
 import { redirect } from "next/navigation";
 import { ArticleType, tables } from "./types";
 import { updateTag } from "next/cache";
+import { createConnectionPool, endConnectionPool } from "./connections";
 
 export const createArticle = async ({
   articleType,
@@ -16,7 +16,7 @@ export const createArticle = async ({
   content: string;
   slug: string;
 }) => {
-  const pool = await Connection.requestConnectionPool();
+  const pool = await createConnectionPool();
 
   const data = await insertNewArticleQuery(
     pool,
@@ -26,12 +26,10 @@ export const createArticle = async ({
     slug,
   );
 
-  await Connection.requestConnectionPoolEnd();
+  await endConnectionPool(pool);
 
   updateTag(tables[articleType]);
   redirect(`/${tables[articleType]}/${data.rows[0].id}`);
-
-  return Promise.resolve();
 };
 
 export default createArticle;

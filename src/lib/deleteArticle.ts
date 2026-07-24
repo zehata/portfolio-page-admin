@@ -1,10 +1,10 @@
 "use server";
 
-import Connection from "./createDatabaseConnectionPool";
 import { updateTag } from "next/cache";
 import { ArticleType, tables } from "./types";
 import deleteArticleQuery from "@/queries/deleteArticleQuery";
 import { redirect } from "next/navigation";
+import { createConnectionPool, endConnectionPool } from "./connections";
 
 export const deleteArticle = async ({
   articleType,
@@ -13,11 +13,11 @@ export const deleteArticle = async ({
   articleType: ArticleType;
   id: string;
 }) => {
-  const pool = await Connection.requestConnectionPool();
+  const pool = await createConnectionPool();
 
   await deleteArticleQuery(pool, articleType, id);
 
-  await Connection.requestConnectionPoolEnd();
+  await endConnectionPool(pool);
 
   updateTag(id);
   updateTag(tables[articleType]);
